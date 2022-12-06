@@ -1,0 +1,26 @@
+CREATE TABLE clothing (id INTEGER PRIMARY KEY, article_type TEXT, price NUMERIC, month_sold TEXT, year_sold INTEGER,quantity INTEGER );
+
+INSERT INTO clothing VALUES (1, "ShortSlvShrt", 10.99, "June", 2022, 25);
+INSERT INTO clothing VALUES (2, "LongSlvShrt", 12.99, "March", 2021, 36);
+INSERT INTO clothing VALUES (3, "BFJeans", 27.95, "Sept", 2021, 47);
+INSERT INTO clothing VALUES (4, "Shorts", 15.99, "March", 2021, 23);
+INSERT INTO clothing VALUES (5, "Skirts", 10.95, "June", 2022, 40);
+INSERT INTO clothing VALUES (6, "BallCap", 8.99, "May", 2022, 120);
+INSERT INTO clothing VALUES (7, "Flipflops", 4.99, "July", 2022, 67);
+INSERT INTO clothing VALUES (8, "Dresses", 29.99, "July", 2022, 45);
+INSERT INTO clothing VALUES (9, "CrewNkSweatrs", 25.99, "Nov", 2021, 55);
+INSERT INTO clothing VALUES (10, "MidiSkrt", 17.99, "March", 2022, 34);
+INSERT INTO clothing VALUES (11, "JeansSkinny", 19.99, "Nov", 2021, 89);
+INSERT INTO clothing VALUES (12, "ZipHoodie", 23.95, "Sept", 2021, 55);
+INSERT INTO clothing VALUES (13, "Sweatshrt", 19.99, "Jan", 2022, 12);
+INSERT INTO clothing VALUES (14, "GraphicTees", 15.99, "Feb", 2022, 78);
+INSERT INTO clothing VALUES (15, "ASymTunics", 17.95, "Oct", 2021, 29);
+
+
+SELECT * FROM clothing WHERE year_sold <2022 ORDER BY price;
+SELECT SUM(quantity) FROM clothing WHERE year_sold<2022;
+
+SELECT * FROM clothing WHERE year_sold =2022 ORDER BY price;
+SELECT SUM(quantity) FROM clothing WHERE year_sold=2022;
+
+SELECT SUM(price*quantity) FROM clothing WHERE year_sold =2022;
