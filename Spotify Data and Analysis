@@ -1,0 +1,88 @@
+
+
+# For this project, I downloaded Spotify data from Kaggle.
+# Then I created a table to insert Spotify data into.
+# Finally, I performed analytics on the data using SQL. 
+
+#Creating the table: 
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)
+
+#Then I inserted the Spotify Data .csv into the table.
+
+#Next, I explored the data using the following SQL. 
+
+SELECT * FROM BIT_DB.Spotifydata;
+
+--Here are some questions I asked about the data.
+
+--What is the most popular song?
+SELECT track_name
+,popularity
+FROM BIT_DB.Spotifydata
+ORDER BY popularity desc limit 1;
+
+--Which artist(s) has the most songs on the Top 50 list?
+SELECT artist_name
+,COUNT(artist_name) AS total_tracks
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name
+ORDER BY total_tracks desc;
+
+--What's the average danceability and average duration in minutes by artist?
+SELECT artist_name
+,AVG(danceability)
+,AVG(duration_ms)/60000 AS avg_duration_min
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name 
+ORDER BY avg_duration_min desc;
+
+--I determined the MAX, MIN, AVG of song duration in minutes
+SELECT MAX(duration_ms)/60000 as longest_song
+,MIN(duration_ms)/60000 as shortest_song
+,AVG(duration_ms)/60000 as avg_song
+FROM BIT_DB.Spotifydata;
+
+--I wanted to organize the data into song duration categories. 
+--how many songs are above avg, avg, or less than avg in duration?
+SELECT COUNT(track_name),
+CASE 
+     WHEN duration_ms/60000 > 3.2 THEN 'Above avg'
+     WHEN duration_ms/60000 = ROUND(3.2) THEN 'Avg'
+     ELSE 'Less Avg'
+     END AS duration
+FROM BIT_DB.Spotifydata
+GROUP BY duration;
+
+--Calculate the average popularity for the artists in the Spotify data table. 
+--Then, for every artist with an average popularity of 90 or above, show their name, 
+--their average popularity, and label them as a “Top Star”.
+
+WITH avg_popularity_CTE AS (
+SELECT AVG(popularity) AS avg_popularity, artist_name
+FROM Spotifydata
+GROUP BY artist_name)
+
+SELECT artist_name
+,avg_popularity
+,'Top Star' AS tag
+FROM avg_popularity_CTE
+WHERE avg_popularity>=90;
