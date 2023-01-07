@@ -1,0 +1,134 @@
+--I downloaded a database called "chinook", which represents a digital media store. It contains many tables.
+--Next, I performed analytics on the database using the following SQL.
+
+--1. Show Customers (their full names, customer ID, and country) who are not in the US. 
+
+SELECT customerId, firstname, lastname, country
+FROM chinook.customers
+WHERE country <> 'USA';
+
+--2. Show only the Customers from Brazil.
+SELECT customerId, firstname, lastname, country
+FROM chinook.customers
+WHERE country = 'Brazil';
+
+--3. Find the Invoices of customers who are from Brazil. 
+--The resulting table should show the customer's full name, Invoice ID, 
+--Date of the invoice, and billing country
+
+SELECT c.firstname, c.lastname
+, i.invoiceId
+,i.BillingCountry
+FROM chinook.customers c
+LEFT INNER JOIN chinook.invoices i
+ON c.customerId = i.customerId
+WHERE i.BillingCountry = 'Brazil';
+
+--4. Show the Employees who are Sales Agents.
+
+SELECT firstname, lastname, title
+FROM chinook.employees
+WHERE title LIKE '%Sales%';
+
+--5. Find a unique/distinct list of billing countries from the Invoice table.
+
+SELECT distinct billingcountry
+FROM chinook.invoices;
+
+--6. Provide a query that shows the invoices associated with each sales agent. 
+--The resulting table should include the Sales Agent's full name.
+
+SELECT i.invoiceid, em.firstname, em.lastname, em.title 
+FROM chinook.employees em
+JOIN chinook.customers c
+ON em.employeeid = c.supportrepid
+JOIN chinook.invoices i
+ON i.customerid = c.customerid;
+
+--7. Show the Invoice Total, Customer name, Country, 
+--and Sales Agent name for all invoices and customers.
+SELECT i.total
+,c.firstname
+,c.lastname
+,c.country
+,em.firstname
+,em.lastname
+,em.title
+FROM chinook.employees em
+JOIN chinook.customers c
+ON em.employeeid = c.supportrepid
+JOIN chinook.invoices i
+ON i.customerid = c.customerid
+WHERE em.title= 'Sales Support Agent'
+ORDER BY i.total;
+
+--8. How many Invoices were there in 2009?
+
+SELECT COUNT(invoiceid)
+FROM chinook.invoices
+WHERE invoicedate BETWEEN '2009-01-01' AND '2009-12-31';
+
+--9. What are the total sales for 2009?
+SELECT SUM(total)
+FROM chinook.invoices
+WHERE invoicedate BETWEEN '2009-01-01' AND '2009-12-31';
+
+--10. Write a query that includes the purchased track name with each invoice line ID.
+SELECT tracks.Name
+,invoice_items.invoicelineid
+FROM chinook.tracks
+JOIN chinook.invoice_items
+ON tracks.trackid = invoice_items.trackid;
+
+--11.Write a query that includes the purchased track name 
+--AND artist name with each invoice line ID.
+
+SELECT artists.name AS artist, tracks.name AS Track,  invoice_items.invoicelineid
+FROM chinook.tracks
+LEFT JOIN chinook.invoice_items
+ON tracks.trackid = invoice_items.trackid
+INNER JOIN chinook.albums
+ON albums.albumid= tracks.albumid
+LEFT JOIN chinook.artists
+ON artists.artistid = albums.ArtistId
+WHERE invoicelineid IS NOT NULL;
+
+--12. Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre.
+SELECT tracks.name AS trackname
+, albums.title
+, media_types.name AS mediatype
+,genres.name AS genre
+FROM chinook.tracks
+INNER JOIN chinook.albums
+ON tracks.albumid= albums.albumid
+LEFT JOIN chinook.media_types
+ON tracks.mediatypeid = media_types.mediatypeid
+LEFT JOIN chinook.genres  
+ON tracks.genreid = genres.genreid;
+
+--13.Show the total sales made by each sales agent.
+SELECT em.employeeid
+,em.firstname
+,em.lastname
+,ROUND(SUM(i.total), 2)AS totalsales
+FROM chinook.customers cust 
+JOIN chinook.invoices i
+ON i.customerid = cust.customerid
+JOIN chinook.employees em
+on cust.supportrepid = em.employeeid
+WHERE em.title = 'Sales Support Agent'
+GROUP BY em.employeeid;
+
+--14.Which sales agent made the most dollars in sales in 2009?
+SELECT ROUND(SUM(invoices.total), 2)as totalsales
+, employees.FirstName
+,employees.LastName
+FROM chinook.employees
+JOIN chinook.customers
+ON employees.employeeid= customers.SupportRepId
+JOIN chinook.invoices
+ON customers.customerid = invoices.CustomerId
+WHERE employees.title = 'Sales Support Agent'
+AND invoices.InvoiceDate between '2009-01-01' and '2009-12-31'
+GROUP BY employees.FirstName
+ORDER BY (ROUND(sum(invoices.total),2)) DESC LIMIT 1;
