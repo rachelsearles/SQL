@@ -1,0 +1,35 @@
+/*I wanted to see questions and user responses, so I joined the Question
+and answer tables. I grouped by id, question, and answer to make it more readable*/
+SELECT q.questionid, q.questiontext, a.AnswerText 
+FROM mental_health.Question q
+JOIN mental_health.Answer a
+ON q.questionid = a.QuestionID
+GROUP BY q.questionid, q.questiontext, a.AnswerText;
+
+/*Here, I did multiple queries to find the question ID and matching answers.*/
+
+SELECT * FROM Question WHERE QuestionID =13;
+SELECT * FROM Question;
+SELECT * FROM Question WHERE QuestionID =118;
+SELECT AnswerText FROM Answer WHERE QuestionID =118;
+SELECT * FROM Question WHERE QuestionID =10;
+SELECT AnswerText FROM Answer WHERE QuestionID =10;
+
+/*I wanted to see a count of how many people report their employer provides mental health benefits*/
+SELECT COUNT(AnswerText) AS Yes FROM Answer WHERE QuestionID=10 AND AnswerText ='Yes';
+/* answer 1,744 people responsed 'yes'*/
+
+SELECT * FROM Question WHERE QuestionId=18;
+/*QuestionId 18 is asking would you feel comfortable discussing a mental health issue with your coworkers?
+Who answered NO?*/
+
+SELECT COUNT(AnswerText) AS Nope
+FROM Answer 
+WHERE QuestionId=18 AND AnswerText='No';
+/*Answer 719 
+Now I'd like to find out who answered YES*/
+
+SELECT COUNT(AnswerText) AS Yes
+FROM Answer 
+WHERE QuestionId=18 AND AnswerText='Yes'; 
+/*Answer 682 people responded YES.*/
