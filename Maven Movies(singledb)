@@ -1,0 +1,94 @@
+/* SITUATION: The fictional company "Maven Movies" has an insurance policy that is due for renewal.
+The insurance company's underwriters need some updated information in order to assess risk and make an informed decision 
+on the policy renewal.*/
+
+/*TASK/ACTION:
+I'm querying in a database called "Maven Movies". It contains multiple tables. 
+I'm answering business questions posed by the insurance company that is getting some updated information
+on the Maven Movies rental business so that they can make an informed decision on the business' upcoming policy renewal */
+
+/*
+1.	We will need a list of all staff members, including their first and last names, 
+email addresses, and the store identification number where they work. 
+*/ 
+SELECT 
+first_name
+,last_name
+,email
+,store_id
+FROM staff;
+
+/*
+2.	We will need separate counts of inventory items held at each of your two stores. 
+*/ 
+SELECT inventory_id
+,store_id
+,COUNT(inventory_id) AS inventory
+FROM inventory
+GROUP BY store_id,
+inventory_id;
+
+/*
+3.	We will need a count of active customers for each of your stores. Separately, please. 
+*/
+SELECT COUNT(customer_id) AS active_cust,
+store_id
+FROM customer 
+WHERE active = 1
+GROUP BY store_id;
+
+/*
+4.	In order to assess the liability of a data breach, we will need you to provide a count 
+of all customer email addresses stored in the database. 
+*/
+SELECT store_id,
+COUNT(email) as cust_emails
+FROM customer
+GROUP BY store_id;
+
+/*
+5.	We are interested in how diverse your film offering is as a means of understanding how likely 
+you are to keep customers engaged in the future. Please provide a count of unique film titles 
+you have in inventory at each store and then provide a count of the unique categories of films you provide. 
+*/
+
+SELECT store_id,
+COUNT(DISTINCT film_id) as unique_titles
+FROM inventory
+GROUP BY store_id;
+
+SELECT 
+COUNT(DISTINCT name) AS unique_categories
+FROM category;
+
+/*
+6.	We would like to understand the replacement cost of your films. 
+Please provide the replacement cost for the film that is least expensive to replace, 
+the most expensive to replace, and the average of all films you carry. ``	
+*/
+SELECT 
+MIN(replacement_cost) as lowest_cost,
+MAX(replacement_cost) highest_cost,
+AVG(replacement_cost) avg_cost
+FROM film;
+
+/*
+7.	We are interested in having you put payment monitoring systems and maximum payment 
+processing restrictions in place in order to minimize the future risk of fraud by your staff. 
+Please provide the average payment you process, as well as the maximum payment you have processed.
+*/
+SELECT 
+AVG(amount) as Avg_payment
+,MAX(amount) as largest_amount
+FROM payment;
+
+/*
+8.	We would like to better understand what your customer base looks like. 
+Please provide a list of all customer identification values, with a count of rentals 
+they have made all-time, with your highest volume customers at the top of the list.
+*/
+SELECT customer_id
+,COUNT(rental_id) as total_rentals
+FROM rental
+GROUP BY customer_id
+ORDER BY total_rentals DESC;
