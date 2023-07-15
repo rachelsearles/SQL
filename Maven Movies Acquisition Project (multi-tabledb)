@@ -1,4 +1,6 @@
-/* Situation: The fictional company "Maven Movies" has been approached by a local business owner who may want to acquire the company. They have a lot of questions about the company and rental business in general. Many of the questions require me to write multi-table queries.*/
+/* Situation: The fictional company "Maven Movies" has been approached by a local business owner who may want to acquire the company. 
+They have a lot of questions about the company and rental business in general. 
+Many of the questions require me to write multi-table queries.*/
 
 /* 
 1. My partner and I want to come by each of the stores in person and meet the managers. 
