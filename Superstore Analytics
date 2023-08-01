@@ -1,0 +1,29 @@
+-- Performed analysis on a retail store dataset. Identified the highest and lowest rated items, and potential revenue.
+
+SELECT * FROM superstore
+ORDER BY price DESC;
+
+-- Highest and lowest rated item 
+
+SELECT item_name, average_rating
+FROM superstore
+WHERE average_rating = (SELECT MAX(average_rating) FROM superstore)
+   OR average_rating = (SELECT MIN(average_rating) FROM superstore);
+
+-- What is our most expensive kitchen product?
+SELECT
+item_name
+,MAX(price)
+FROM superstore
+WHERE category = 'Kitchen Supplies'
+GROUP BY item_name 
+ORDER BY MAX(price) DESC LIMIT 1 ;
+
+/*Earning potential if we sold every item in stock 
+in the Kitchen Supplies category*/ 
+
+SELECT category, 
+price * stock_quantity as potential_earnings
+FROM superstore
+WHERE category = 'Kitchen Supplies'
+GROUP BY category;
