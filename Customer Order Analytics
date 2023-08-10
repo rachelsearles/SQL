@@ -6,11 +6,15 @@ SELECT COUNT(*) FROM BIT_DB.JanSales
 WHERE orderID <> ''
 AND orderID <> "Order ID";
 
+ANSWER: 9681
+
 --How many of those orders were for an iPhone?
 SELECT COUNT(*) FROM BIT_DB.JanSales
 WHERE orderID <> ''
 AND orderID <> "Order ID"
 AND Product = "iPhone";
+
+ANSWER: 379
 
 --Select the customer account numbers for all the orders that were placed in February.
 SELECT distinct acctnum 
@@ -20,6 +24,8 @@ ON c.order_id=fs.orderID
 WHERE orderID <> ''
 AND orderID <> "Order ID";
 
+Total Accounts: 11,986
+
 --Which product was the cheapest one sold in January, and what was the price?
 SELECT 
 distinct Product
@@ -27,6 +33,9 @@ distinct Product
 FROM BIT_DB.JanSales
 GROUP BY Product, price
 ORDER BY price ASC LIMIT 1;
+
+Product: AAA Batteries, 
+MIN Price: 2.99
 
 --What is the total revenue for each product sold in January? 
 --(Revenue can be calculated using the number of products sold and the price of the products).
@@ -37,6 +46,27 @@ FROM BIT_DB.JanSales
 GROUP BY Product
 ORDER BY revenue ASC;
 
+4772.04	AAA Batteries (4-pack)
+5472	AA Batteries (4-pack)
+12961.19	Wired Headphones
+15343.8	USB-C Charging Cable
+17207.45	Lightning Charging Cable
+23400	LG Dryer
+23647.85	20in Monitor
+25200	LG Washing Machine
+50000	Vareebadd Phone
+62845.810000000005	27in FHD Monitor
+65893.41	Bose SoundSport Headphones
+72900	Flatscreen TV
+119316.86	34in Ultrawide Monitor
+121676.88	27in 4K Gaming Monitor
+122100	Apple Airpods Headphones
+190800	Google Phone
+216997.83000000002	ThinkPad Laptop
+265300	iPhone
+399500	Macbook Pro Laptop
+
+
 --Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
 SELECT product
 ,SUM(quantity) 
@@ -44,6 +74,8 @@ SELECT product
 FROM BIT_DB.FebSales
 WHERE location = "548 Lincoln St, Seattle, WA 98101"
 GROUP BY product;
+
+AA Batteries (4-pack)	2(quanitity)	7.68(revenue)
 
 --How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers?
 SELECT 
