@@ -1,0 +1,24 @@
+/* The following is code I've written to analyze the effectiveness of marketing campaigns on website traffic. The second query is where I produced a conversion rate (sessions to orders)
+to determine campaign impact on sales. Conversion rate was below 4%, the company was able to save money on marketing based on this analysis */
+
+SELECT * FROM website_sessions;
+SELECT utm_source,
+		utm_campaign,
+        http_referer,
+		COUNT(DISTINCT website_session_id) as website_sessions
+FROM website_sessions
+WHERE created_at < '2012-04-12'
+GROUP BY utm_source,
+		utm_campaign,
+        http_referer
+ORDER BY website_sessions DESC;
+
+SELECT 
+COUNT(DISTINCT orders.order_id) as orders,
+COUNT(DISTINCT website_sessions.website_session_id) as sessions,
+COUNT(DISTINCT orders.order_id)/COUNT(DISTINCT website_sessions.website_session_id) as sess_to_order_cnv_rate
+FROM website_sessions 
+LEFT JOIN orders ON website_sessions.website_session_id = orders.website_session_id
+WHERE website_sessions.created_at < '2012-04-14'
+AND utm_source = 'gsearch'
+AND utm_campaign = 'nonbrand';
