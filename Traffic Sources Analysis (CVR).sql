@@ -13,6 +13,9 @@ GROUP BY utm_source,
         http_referer
 ORDER BY website_sessions DESC;
 
+/* the results incidated that "gsearch nonbrand" was performing best. The next query shows a conversion rate 
+of sessions to orders for "gsearch nonbrand" */
+
 SELECT 
 COUNT(DISTINCT orders.order_id) as orders,
 COUNT(DISTINCT website_sessions.website_session_id) as sessions,
@@ -23,8 +26,11 @@ WHERE website_sessions.created_at < '2012-04-14'
 AND utm_source = 'gsearch'
 AND utm_campaign = 'nonbrand';
 
+-- the results showed a conversion rate of 2.8%. Further analysis on bid optimization is needed.
+
 -- BID OPTIMIZATION
---The following queries show a bid optimization analysis on website traffic. I use converstion rates by session and device type. 
+--The following queries show a bid optimization analysis on website traffic for the "gsearch nonbrand" campaign. 
+-- I used conversion rates by session and device type. 
 -- I also use the COUNT CASE method to show trending over time.
 
 SELECT 
@@ -50,6 +56,7 @@ WHERE website_sessions.created_at < '2012-05-11'
 	AND utm_source = 'gsearch'
     AND utm_campaign = 'nonbrand'
 GROUP BY website_sessions.device_type;
+
 /*the above query results show that mobile has a much lower CVR (less than 1%)
 while desktop sessions have a 3.7% CVR*/ 
 
@@ -69,5 +76,6 @@ YEAR(created_at),
 WEEK(created_at);
 -- results showed weekly trends on volume of desktop and mobile sessions
 -- desktop sessions trend up, while mobile sessions trend down.
--- this analysis is on a granular level.
+-- The analysis suggests that the mobile user experience is resulting in significantly less orders. 
+--The analysis supports the recommendation to investigate the mobile experience.
 
