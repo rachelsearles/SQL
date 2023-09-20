@@ -1,9 +1,13 @@
+/* The situation is a new client has reached out for help on setting up his database for his business from the ground up.
+My objective is to design a database from scratch which will capture information about 
+the clients customers, the purchases they make, the products and his employees.*/
+
 /* Bubs wants you to track information on his customers (first name, last name, email),
 his employees (first name, last name, start date, position help), his products, and the 
 purchases customers make (which customer, when it was purchased, for how much money). 
 Think about how many tables you should create. Which data goes in which tables? How should the tables
 relate to one another? */
-
+-- THIS IS AN OUTLINE OF THE TABLES I WILL CREATE IN MYSQL WORKBENCH
 -- table: customers
 -- cust id, first name, last name, email
 -- table: employees
@@ -24,14 +28,15 @@ diagramed out. Make sure they relate to each other, and that they have the same 
 data types you selected previously. */
 
 -- done!
+-- added Primary and foreign keys so that the tables related to each other.
 
 /* Add any constraints you think your table columns should have. Think through which columns need
 to be unique, which ones are allowed to have NULL values, etc. */
 
 -- done! 
+-- added Non NULL constraints to columns that need to have values.
 
-/* Insert at least 3 records of data into each table. The exact values do not matter, so make
-them up. Make sure the data inserted makes sense and the tables tie together. */
+/* Insert at least 3 records of data into each table. Test to make sure the tables are working. */
 
 USE bubsbooties;
 
